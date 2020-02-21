@@ -14,7 +14,7 @@ config['Victim_Machine'] = {
     'os': 'Windows 10',
     'IP_address': '192.168.56.2',
     'installed_software': '',
-    'vulnerabilities': 'ssh_weak_password',
+    'vulnerabilities': 'ssh_weak_password Chrome_exploit',
     'defense_actions': ''
 }
 
@@ -95,7 +95,7 @@ config['ssh-old'] = {
 
 config['apache'] = {
     'name': 'Apache2',
-    'version': '2.4'
+    'version': '2.2'
 }
 
 config['metasploit'] = {

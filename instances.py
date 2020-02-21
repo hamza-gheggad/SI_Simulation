@@ -2,6 +2,7 @@ import simpy
 from agents import *
 from configparser import ConfigParser
 
+
 parser = ConfigParser()
 parser.read('dev.ini')
 
@@ -15,7 +16,7 @@ chrome = Software(parser.get('chrome', 'name'), parser.get('chrome', 'version'))
 metasploit = Software(parser.get('metasploit', 'name'), parser.get('metasploit', 'version'))
 
 
-MachineVictime = Victim_Machine(parser.get('Victim_Machine', 'name'), parser.get('Victim_Machine', 'os'), parser.get('Victim_Machine', 'IP_address'), [ssh, chrome], parser.get('Victim_Machine', 'vulnerabilities'))
+MachineVictime = Victim_Machine(parser.get('Victim_Machine', 'name'), parser.get('Victim_Machine', 'os'), parser.get('Victim_Machine', 'IP_address'), [ssh, chrome, apache], parser.get('Victim_Machine', 'vulnerabilities'))
 sous_reseau.add_node(MachineVictime)
 
 MachineAttaquant = Attacking_Machine(parser.get('Attacking_Machine', 'name'), parser.get('Attacking_Machine', 'os'), parser.get('Attacking_Machine', 'IP_address'), [ssh, chrome, metasploit], parser.get('Attacking_Machine', 'attack_actions'))
