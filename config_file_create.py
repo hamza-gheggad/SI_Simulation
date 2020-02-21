@@ -3,27 +3,35 @@ from configparser import ConfigParser
 config = ConfigParser()
 
 config['Machine'] = {
-    'name': 'name',
-    'os': 'os',
-    'IP_address': 'IP_address',
-    'installed_software': 'installed_software'
+    'name': 'Ordi personnel',
+    'os': 'Debian2.0',
+    'IP_address': '192.168.56.1',
+    'installed_software': ''
 }
 
 config['Victim_Machine'] = {
-    'name': 'name',
-    'os': 'os',
-    'IP_address': 'IP_address',
-    'installed_software': 'installed_software',
-    'vulnerabilities': 'vulnerabilities',
-    'defense_actions': 'defense_actions'
+    'name': 'Ordi-Paul',
+    'os': 'Windows 10',
+    'IP_address': '192.168.56.2',
+    'installed_software': '',
+    'vulnerabilities': 'ssh_weak_password',
+    'defense_actions': ''
+}
+
+config['parfeu'] = {
+    'name': 'Parfeu-Paul',
+    'os': 'Debian2.1',
+    'IP_address': '192.168.56.102',
+    'installed_software': '',
+    'rules': 'ACCEPT INPUT HTTP,ACCEPT OUTPUT HTTP,ACCEPT INPUT SSH,ACCEPT OUTPUT SSH'
 }
 
 config['Attacking_Machine'] = {
-    'name': 'name',
-    'os': 'os',
-    'IP_address': 'IP_address',
-    'installed_software': 'installed_software',
-    'attack_actions': 'attack_actions'
+    'name': 'Ordi-Anonyme',
+    'os': 'Kali2020.1',
+    'IP_address': '192.168.56.100',
+    'installed_software': '',
+    'attack_actions': 'attack1 attack2'
 }
 
 config['Server'] = {
@@ -40,14 +48,14 @@ config['Client'] = {
     'installed_software': 'installed_software'
 }
 
-config['Web_server'] = {
-    'name': 'name',
-    'os': 'os',
-    'IP_address': 'IP_address',
-    'installed_software': 'installed_software'
+config['web_server'] = {
+    'name': 'serveur web ALPHA',
+    'os': 'Fedora31.0',
+    'IP_address': '204.17.5.100',
+    'installed_software': 'apache2 SSH5.1'
 }
 
-config['Mail_server'] = {
+config['mail_server'] = {
     'name': 'name',
     'os': 'os',
     'IP_address': 'IP_address',
@@ -60,23 +68,49 @@ config['Utilisateur'] = {
 }
 
 config['Victime'] = {
-    'name': 'name',
+    'name': 'Paul',
     'Victim_Machine': 'Victim_Machine'
 }
 
 config['Attaquant'] = {
-    'name': 'name',
-    'Victim_Machine': 'Victim_Machine'
+    'name': 'Anonymous',
+    'Attacking_Machine': 'Attacking_Machine'
+
 }
 
-config['Subnet'] = {
-    'name': 'name',
+config['subnet'] = {
+    'name': 'réseau local',
     'components': 'components'
 }
 
-config['Software'] = {
-    'name': 'name',
-    'version': 'version'
+config['ssh-new'] = {
+    'name': 'SSH5.1',
+    'version': '5.1'
+}
+
+config['ssh-old'] = {
+    'name': 'SSH2.4',
+    'version': '2.4'
+}
+
+config['apache'] = {
+    'name': 'Apache2',
+    'version': '2.4'
+}
+
+config['metasploit'] = {
+    'name': 'Metasploit',
+    'version': '4.17'
+}
+
+config['wireshark'] = {
+    'name': 'Wireshark',
+    'version': '3.0.1'
+}
+
+config['chrome'] = {
+    'name': 'Chrome',
+    'version': '81.0'
 }
 
 config['File_System'] = {
@@ -89,7 +123,7 @@ config['Router'] = {
 }
 
 config['NIDS'] = {
-    'name': 'namr'
+    'name': 'name'
 }
 
 with open('/Users/p/Desktop/CEI/dev.ini', 'w') as f:
