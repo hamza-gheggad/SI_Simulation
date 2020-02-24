@@ -1,13 +1,41 @@
 import logging
 
 
+class Router:
+    def __init__(self, name, subnetin, subnetout):
+        self.name = name
+        self.subnetin = subnetin
+        self.subnetout = subnetout
+        self.gateway = True
+
+    def endrouting(self):
+        if self.gateway == True:
+            self.gateway = False
+            logging.debug("Le routeur {} -> {}est arrêté.".format(self.subnetin, self.subnetout))
+        else:
+            print("Ce routeur est déjà arrêté.")
+
+    def startrouting(self):
+        if self.gateway == False:
+            self.gateway = True
+            logging.debug("Le routeur {} -> {}est démarré.".format(self.subnetin, self.subnetout))
+        else:
+            print("Ce routeur est déjà démarré.")
+
+
 class subnet:
-    def __init__(self, name, components):
+    def __init__(self, name, components, router):
         self.name = name
         self.components = components
+        self.router = router
 
     def add_node(self, new_node):
         self.components.append(new_node)
+        logging.debug("Le noeud {} a été ajouté au sous-réseau.".format(new_node))
+
+    def remove_node(self, node):
+        self.components.remove(node)
+        logging.debug("Le noeud {} a été supprimé du sous-réseau.".format(node))
 
 
 class File_System:
@@ -98,36 +126,40 @@ class parfeu(Machine):
 
 
 class Server(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software, booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", []), booted=False):
         self.name = name
         self.os = os
+        self.subnet = subnet
         self.IP_address = IP_address
         self.installed_software = installed_software
         self.booted = booted
 
 
 class Client(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software, booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", []), booted=False):
         self.name = name
         self.os = os
+        self.subnet = subnet
         self.IP_address = IP_address
         self.installed_software = installed_software
         self.booted = booted
 
 
 class web_server(Server):
-    def __init__(self, name, os, IP_address, installed_software, booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", []), booted=False):
         self.name = name
         self.os = os
+        self.subnet = subnet
         self.IP_address = IP_address
         self.installed_software = installed_software
         self.booted = booted
 
 
 class mail_server(Server):
-    def __init__(self, name, os, IP_address, installed_software, booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", []), booted=False):
         self.name = name
         self.os = os
+        self.subnet = subnet
         self.IP_address = IP_address
         self.installed_software = installed_software
         self.booted = booted
@@ -179,15 +211,6 @@ class Software:
             logging.debug("Les droits d'accès pour {} est désormais user.".format(self.name))
         else:
             print("Les droits d'accès sont déjà user (any).")
-
-
-class Router:
-    def __init__(self, IP_address, subnetin, subnetout):
-        self.IP_address = IP_address
-        self.subnetin = subnetin
-        self.subnetout = subnetout
-
-    def gateway(self):
 
 
 class NIDS:
