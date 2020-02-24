@@ -1,3 +1,5 @@
+
+import time
 import logging
 logging.basicConfig(filename="shell-history.log", level=logging.DEBUG, format='%(asctime)s:%(levelname)s:%(message)s')
 
@@ -6,8 +8,6 @@ from instances import *
 
 
 machineNULL = Machine("NULL", "NULL", "NULL", "NULL")
-
-
 while True:
     x = input("{}> ".format(attaquant.name))
     L = x.split()
@@ -20,6 +20,7 @@ while True:
         for node in attaquant.Attacking_Machine.subnet.components:
             if node.IP_address == L[1]:
                 for software in node.installed_software:
+                    time.sleep(1)
                     print(software.name)
                     H.append(software.name)
 
@@ -28,6 +29,7 @@ while True:
     if 'list_subnet_machines' in L:
         H = []
         for node in attaquant.Attacking_Machine.subnet.components:
+            time.sleep(1)
             print(node.name)
             H.append(node.name)
 
@@ -38,18 +40,21 @@ while True:
             if node.IP_address == L[2]:
                 for software in node.installed_software:
                     if software.name == L[1]:
+                        time.sleep(1)
                         print(software.version)
                         logging.debug("La version de {} du {} est : {}".format(software.name, node.name, software.version))
 
     if 'ip' in L:
         for node in attaquant.Attacking_Machine.subnet.components:
             if node.name == L[1]:
+                time.sleep(1)
                 print(node.IP_address)
                 logging.debug("ip de {} est : {}".format(node.name, node.IP_address))
 
     if 'os' in L:
         for node in attaquant.Attacking_Machine.subnet.components:
             if node.IP_address == L[1]:
+                time.sleep(1)
                 print(node.os)
                 logging.debug("os de {} est : {}".format(node.name, node.os))
 
@@ -57,7 +62,8 @@ while True:
         for node in attaquant.Attacking_Machine.subnet.components:
             if node.IP_address == L[3] and L[1] == "memory-attack" and L[2] == "Apache2":
                 for software in node.installed_software:
-                    if software.name == L[2] and software.version=="2.2":
+                    if software.name == L[2] and software.version == "2.2":
+                        time.sleep(3)
                         attaquant.execAttack(L[1], L[3])
 
     if 'boot' in L:

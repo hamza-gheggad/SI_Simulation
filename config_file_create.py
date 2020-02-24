@@ -55,6 +55,12 @@ config['web_server'] = {
     'installed_software': 'apache2 SSH5.1'
 }
 
+config['apache2_vuln']={
+    'name': 'apache2_vuln',
+    'action':'buffer_overflow',
+    'trigger':'version_2.2'
+}
+
 config['mail_server'] = {
     'name': 'name',
     'os': 'os',

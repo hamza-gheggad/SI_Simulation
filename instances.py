@@ -1,4 +1,4 @@
-import simpy
+
 from agents import *
 from configparser import ConfigParser
 
