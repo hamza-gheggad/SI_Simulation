@@ -19,7 +19,7 @@ config['Victim_Machine'] = {
 }
 
 config['Victim_Externe'] = {
-    'name': 'Victime-externe',
+    'name': 'admin',
     'os': 'Windows XP',
     'IP_address': '62.212.118.53',
     'installed_software': '',
@@ -58,10 +58,10 @@ config['Client'] = {
 }
 
 config['web_server'] = {
-    'name': 'serveur-web-externe',
+    'name': 'user',
     'os': 'Fedora31.0',
     'IP_address': '62.212.118.30',
-    'installed_software': 'apache2 SSH5.1'
+    'installed_software': ''
 }
 
 config['apache2_vuln'] = {
@@ -107,15 +107,16 @@ config['extern_subnet'] = {
     'parfeu': ''
 }
 
-config['ssh-weak'] = {
+config['ssh-admin'] = {
     'name': 'SSH5.1',
     'version': '5.1',
     'password':'admin'
 }
 
-config['ssh-old'] = {
+config['ssh-server'] = {
     'name': 'SSH2.4',
-    'version': '2.4'
+    'version': '2.4',
+    'password':'user'
 }
 
 config['apache'] = {
