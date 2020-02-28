@@ -18,12 +18,21 @@ config['Victim_Machine'] = {
     'defense_actions': ''
 }
 
-config['parfeu'] = {
-    'name': 'Parfeu-Paul',
-    'os': 'Debian2.1',
-    'IP_address': '192.168.56.102',
+config['Victim_Externe'] = {
+    'name': 'Victime-externe',
+    'os': 'Windows XP',
+    'IP_address': '62.212.118.53',
     'installed_software': '',
-    'rules': 'ACCEPT INPUT HTTP,ACCEPT OUTPUT HTTP,ACCEPT INPUT SSH,ACCEPT OUTPUT SSH'
+    'vulnerabilities': 'ssh_weak_password Chrome_exploit',
+    'defense_actions': ''
+}
+
+config['parfeu'] = {
+    'name': 'Parfeu-Externe',
+    'os': 'Debian2.1',
+    'IP_address': '62.212.118.100',
+    'installed_software': '',
+    'rules': 'FORWARD -i HTTP ACCEPT,FORWARD -o HTTP ACCEPT,FORWARD -i SSH ACCEPT,FORWARD -o HTTP ACCEPT'
 }
 
 config['Attacking_Machine'] = {
@@ -49,16 +58,16 @@ config['Client'] = {
 }
 
 config['web_server'] = {
-    'name': 'serveur web ALPHA',
+    'name': 'serveur-web-externe',
     'os': 'Fedora31.0',
-    'IP_address': '204.17.5.100',
+    'IP_address': '62.212.118.30',
     'installed_software': 'apache2 SSH5.1'
 }
 
-config['apache2_vuln']={
+config['apache2_vuln'] = {
     'name': 'apache2_vuln',
-    'action':'buffer_overflow',
-    'trigger':'version_2.2'
+    'action': 'buffer_overflow',
+    'trigger': 'version_2.2'
 }
 
 config['mail_server'] = {
@@ -73,7 +82,7 @@ config['Utilisateur'] = {
     'Machine': 'Machine'
 }
 
-config['Victime'] = {
+config['Paul'] = {
     'name': 'Paul',
     'Victim_Machine': 'Victim_Machine'
 }
@@ -84,9 +93,14 @@ config['Attaquant'] = {
 
 }
 
-config['subnet'] = {
-    'name': 'réseau local',
-    'components': 'components'
+config['local_subnet'] = {
+    'name': 'reseau-local',
+    'components': ''
+}
+
+config['extern_subnet'] = {
+    'name': 'reseau-externe',
+    'components': ''
 }
 
 config['ssh-new'] = {

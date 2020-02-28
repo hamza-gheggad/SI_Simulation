@@ -6,8 +6,12 @@ from configparser import ConfigParser
 parser = ConfigParser()
 parser.read('dev.ini')
 
+router1 = Router("router1", "NULL", "NULL")
+router2 = Router("router2", "NULL", "NULL")
+sous_reseau_local = subnet(parser.get('local_subnet', 'name'), [], router1)
+sous_reseau_externe = subnet(parser.get('extern_subnet', 'name'), [], router2)
 
-sous_reseau = subnet(parser.get('subnet', 'name'), [])
+router1.subnetin, router1.subnetout = sous_reseau_local, sous_reseau_externe
 
 ssh = Software(parser.get('ssh-new', 'name'), parser.get('ssh-new', 'version'))
 apache = Software(parser.get('apache', 'name'), parser.get('apache', 'version'))
@@ -17,32 +21,33 @@ metasploit = Software(parser.get('metasploit', 'name'), parser.get('metasploit',
 
 
 MachineVictime = Victim_Machine(parser.get('Victim_Machine', 'name'), parser.get('Victim_Machine', 'os'), parser.get('Victim_Machine', 'IP_address'), [ssh, chrome, apache], parser.get('Victim_Machine', 'vulnerabilities'))
-sous_reseau.add_node(MachineVictime)
+sous_reseau_local.add_node(MachineVictime)
+
+VictimeExterne = Victim_Machine(parser.get('Victim_Externe', 'name'), parser.get('Victim_Externe', 'os'), parser.get('Victim_Externe', 'IP_address'), [ssh, chrome, apache], parser.get('Victim_Externe', 'vulnerabilities'))
+sous_reseau_externe.add_node(VictimeExterne)
 
 MachineAttaquant = Attacking_Machine(parser.get('Attacking_Machine', 'name'), parser.get('Attacking_Machine', 'os'), parser.get('Attacking_Machine', 'IP_address'), [ssh, chrome, metasploit], parser.get('Attacking_Machine', 'attack_actions'))
-sous_reseau.add_node(MachineAttaquant)
-
+sous_reseau_local.add_node(MachineAttaquant)
 
 parfeu = parfeu(parser.get('parfeu', 'name'), parser.get('parfeu', 'os'), parser.get('parfeu', 'IP_address'), [ssh, chrome, wireshark], parser.get('parfeu', 'rules'))
+sous_reseau_externe.add_node(parfeu)
 
-sous_reseau.add_node(parfeu)
-parfeu.subnet = sous_reseau
-MachineAttaquant.subnet = sous_reseau
-MachineVictime.subnet = sous_reseau
+serveur_distant = web_server(parser.get('web_server', 'name'), parser.get('web_server', 'os'), parser.get('web_server', 'IP_address'), [ssh, chrome, apache])
+sous_reseau_externe.add_node(serveur_distant)
 
-victime = Victime(parser.get('Victime', 'name'), MachineVictime)
+parfeu.subnet = sous_reseau_externe
+MachineAttaquant.subnet = sous_reseau_local
+MachineVictime.subnet = sous_reseau_local
+VictimeExterne.subnet = sous_reseau_externe
 
+Paul = Victime(parser.get('Paul', 'name'), MachineVictime)
 
 attaquant = Attaquant(parser.get('Attaquant', 'name'), MachineAttaquant)
 
 
-serveur_distant = web_server(parser.get('web_server', 'name'), parser.get('web_server', 'os'), parser.get('web_server', 'IP_address'), [ssh, chrome, apache])
-
+subnets = [sous_reseau_local, sous_reseau_externe]
 
 '''
-
-attaquant1 = attaquant(name="attaquant1",
-                       os="Kali Linux", TypeOfAttack="Phishing email")
 
 
 def main():
