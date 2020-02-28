@@ -15,7 +15,6 @@ def main():
 
 def scenario(env, attaquant, speed):
 
-    machineNULL = Machine("NULL", "NULL", "NULL", "NULL")
     while True:
         x = input("{}> ".format(attaquant.name))
         L = x.split()
@@ -25,16 +24,50 @@ def scenario(env, attaquant, speed):
             print("\nLes commandes disponibles sont :\n\nlist_subnet_machines -> lister toutes les machines de votre subnet.\n\nlist_software <ip_machine> -> lister les logiciels ouverts sur machine.\n\nget_version <software> <ip_machine> -> récupérer la version du logiciel.\n\nip <machine> -> ip de machine. -> pour quitter.\n\nos <ip_machine> -> os de machine. -> pour quitter.\n\nexec <attack_name> <software_vulnerable> <ip_destination> -> execute attack.\n\nhelp ou h -> afficher ce menu\n\nexit ou q -> pour quitter.\n\nboot <machine> -> démarrer machine.\n\nshutdown <machine> -> arrêter machine.\n\nreboot <machine> -> redémarrer machine.\n\nroot <software> <ip_machine> -> changer les droits à root.\n\nuser <software> <ip_machine> -> changer les droits à user.\n\nrouter -i -> point de départ du routeur.\n\nrouter -o -> point d'arrivée du routeur.\n\nlist_machines <subnet_name> -> lister les machines d'un réseau.\n")
 
         if 'router' in L:
-            if L[1] == "-i":
+            if "i" in L[1]:
                 print(attaquant.Attacking_Machine.subnet.router.subnetin.name)
-            if L[1] == "-o":
+            if "o" in L[1]:
                 print(attaquant.Attacking_Machine.subnet.router.subnetout.name)
+
+        if 'ssh' in L and '@' in L[1]:
+            for subnet in subnets:
+                for machine in subnet.components:
+                    for software in machine.installed_software:
+                        if 'SSH' in software.name:
+                            if machine.IP_address in L[1] and machine.name in L[1] and machine.booted == True:
+                                password = input("password:")
+                                if software.token1 == password:
+                                    rules = subnet.parfeu.rules.split(',')
+                                    print("Essai de connexion ssh à {}...".format(machine.IP_address))
+                                    time.sleep(3)
+                                    yield env.timeout(speed)
+                                    for rule in rules:
+                                        Rule = rule.split()
+                                        if ('i' in Rule[1] and 'SSH' in Rule[2] and 'ACCEPT' in Rule[3]) or ('ANY' in Rule[1] and 'SSH' in Rule[2] and 'ACCEPT' in Rule[3]):
+                                            print("Connexion ssh réussie à {}".format(machine.IP_address))
+                                            while True:
+                                                shell_ssh = input("{}$".format(machine.name))
+                                                H = shell_ssh.split()
+                                                if ('exit' in H) or ('q' in H):
+                                                    break
+                                                if 'boot' in H:
+                                                    machine.boot()
+                                                if 'reboot' in H:
+                                                    machine.reboot()
+                                                if 'shutdown' in H:
+                                                    machine.shutdown()
+                                                    break
+
+                                        if 'i' in Rule[1] and 'SSH' in Rule[2] and 'REJECT' in Rule[3]:
+                                            print("Connexion ssh non permise à {}".format(machine.IP_address))
+                                else:
+                                    print("mot de passe érroné.")
 
         if 'list_machines' in L:
             for subnet in subnets:
                 if subnet.name == L[1]:
                     for machine in subnet.components:
-                        print(machine.name)
+                        print("{}:{}".format(machine.name, machine.IP_address))
 
         if 'list_software' in L:
             H = []

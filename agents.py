@@ -24,10 +24,11 @@ class Router:
 
 
 class subnet:
-    def __init__(self, name, components, router):
+    def __init__(self, name, components, router, parfeu='NULL'):
         self.name = name
         self.components = components
         self.router = router
+        self.parfeu = parfeu
 
     def add_node(self, new_node):
         self.components.append(new_node)
@@ -193,10 +194,11 @@ class Attaquant(Utilisateur):
 
 
 class Software:
-    def __init__(self, name, version, accessRight="user"):
+    def __init__(self, name, version, accessRight="user", token1=""):
         self.name = name
         self.version = version
         self.accessRight = accessRight
+        self.token1 = token1
 
     def root_only(self):
         if self.accessRight == "user":

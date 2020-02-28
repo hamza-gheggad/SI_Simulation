@@ -14,7 +14,7 @@ config['Victim_Machine'] = {
     'os': 'Windows 10',
     'IP_address': '192.168.56.2',
     'installed_software': '',
-    'vulnerabilities': 'ssh_weak_password Chrome_exploit',
+    'vulnerabilities': 'Chrome_exploit',
     'defense_actions': ''
 }
 
@@ -32,7 +32,7 @@ config['parfeu'] = {
     'os': 'Debian2.1',
     'IP_address': '62.212.118.100',
     'installed_software': '',
-    'rules': 'FORWARD -i HTTP ACCEPT,FORWARD -o HTTP ACCEPT,FORWARD -i SSH ACCEPT,FORWARD -o HTTP ACCEPT'
+    'rules': 'FORWARD -i HTTP ACCEPT,FORWARD -o HTTP ACCEPT,FORWARD -i SSH ACCEPT,FORWARD -o SSH ACCEPT'
 }
 
 config['Attacking_Machine'] = {
@@ -95,17 +95,22 @@ config['Attaquant'] = {
 
 config['local_subnet'] = {
     'name': 'reseau-local',
-    'components': ''
+    'components': '',
+    'router': '',
+    'parfeu': ''
 }
 
 config['extern_subnet'] = {
     'name': 'reseau-externe',
-    'components': ''
+    'components': '',
+    'router': '',
+    'parfeu': ''
 }
 
-config['ssh-new'] = {
+config['ssh-weak'] = {
     'name': 'SSH5.1',
-    'version': '5.1'
+    'version': '5.1',
+    'password':'admin'
 }
 
 config['ssh-old'] = {
