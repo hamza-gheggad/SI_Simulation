@@ -68,12 +68,19 @@ def scenario(env, attaquant, speed):
                                                             for subsoftware in submachine.installed_software:
                                                                 if 'SSH' in subsoftware.name:
                                                                     password = input("password:")
-                                                                    print("Connexion ssh réussie à {}".format(submachine.IP_address))
-                                                                    while True:
-                                                                        subshell_ssh = input("{}$".format(submachine.name))
-                                                                        S = subshell_ssh.split()
-                                                                        if ('exit' in S) or ('q' in S):
-                                                                            break
+                                                                    if subsoftware.token1 == password:
+                                                                        print("Connexion ssh réussie à {}".format(submachine.IP_address))
+                                                                        while True:
+                                                                            subshell_ssh = input("{}$".format(submachine.name))
+                                                                            S = subshell_ssh.split()
+                                                                            if ('exit' in S) or ('q' in S):
+                                                                                break
+                                                                            if 'shutdown' in S:
+                                                                                submachine.shutdown()
+                                                                                break
+                                                                            if 'reboot' in S:
+                                                                                submachine.reboot()
+                                                                    else:print("mot de passe érroné.")
 
                                         if 'i' in Rule[1] and 'SSH' in Rule[2] and 'REJECT' in Rule[3]:
                                             print("Connexion ssh non permise à {}".format(machine.IP_address))
