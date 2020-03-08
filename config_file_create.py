@@ -32,7 +32,7 @@ config['parfeu'] = {
     'os': 'Debian2.1',
     'IP_address': '62.212.118.100',
     'installed_software': '',
-    'rules': 'FORWARD -i HTTP ACCEPT,FORWARD -o HTTP ACCEPT,FORWARD -i SSH ACCEPT,FORWARD -o SSH ACCEPT'
+    'rules': 'FORWARD -i HTTP ACCEPT,FORWARD -o HTTP ACCEPT,FORWARD -i SSH REJECT,FORWARD -o SSH ACCEPT'
 }
 
 config['Attacking_Machine'] = {
@@ -95,6 +95,7 @@ config['Attaquant'] = {
 
 config['local_subnet'] = {
     'name': 'reseau-local',
+    'IP_range':'192.168.56.0/24',
     'components': '',
     'router': '',
     'parfeu': ''
@@ -102,6 +103,7 @@ config['local_subnet'] = {
 
 config['extern_subnet'] = {
     'name': 'reseau-externe',
+    'IP_range':'62.212.118.0/24',
     'components': '',
     'router': '',
     'parfeu': ''
@@ -111,6 +113,12 @@ config['ssh-admin'] = {
     'name': 'SSH5.1',
     'version': '5.1',
     'password':'admin'
+}
+
+config['HIDS'] = {
+    'name': 'HIDS',
+    'version': '',
+    'password':''
 }
 
 config['ssh-server'] = {

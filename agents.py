@@ -5,7 +5,7 @@ class Router:
     def __init__(self, name, subnetin, subnetout):
         self.name = name
         self.subnetin = subnetin
-        self.subnetout = subnetout
+        self.subnetù= out = subnetout
         self.gateway = True
 
     def endrouting(self):
@@ -24,11 +24,12 @@ class Router:
 
 
 class subnet:
-    def __init__(self, name, components, router, parfeu='NULL'):
+    def __init__(self, name="NULL", IP_range='0.0.0.0/24', components=[], router="NULL", parfeu='NULL'):
         self.name = name
         self.components = components
         self.router = router
         self.parfeu = parfeu
+        self.IP_range = IP_range
 
     def add_node(self, new_node):
         self.components.append(new_node)
@@ -53,10 +54,11 @@ class vulnerability:
 
 
 class Machine:
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", [], "NULL"), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, rights='user', subnet=subnet(), filesystem=File_System([], []), booted=False):
         self.name = name
         self.booted = booted
         self.os = os
+        self.rights = rights
         self.IP_address = IP_address
         self.installed_software = installed_software
         self.subnet = subnet
@@ -82,9 +84,23 @@ class Machine:
         else:
             print("La machine est déjà arretée.")
 
+    def to_root(self):
+        if self.rights == 'user':
+            self.rights = 'root'
+            logging.debug("Les droits sur la machine {} sont désormais root.".format(self.name))
+        else:
+            print("Vous êtes déjà root")
+
+    def to_user(self):
+        if self.rights == 'root':
+            self.rights = 'user'
+            logging.debug("Les droits sur la machine {} sont désormais user.".format(self.name))
+        else:
+            print("Vous êtes déjà user")
+
 
 class Victim_Machine(Machine):
-    def __init__(self, name, os, IP_address, installed_software, vulnerabilities, defense_actions=[], subnet=subnet("NULL", [], "NULL"), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, vulnerabilities, defense_actions=[], subnet=subnet(), filesystem=File_System([], []), booted=False):
         self.name = name
         self.os = os
         self.IP_address = IP_address
@@ -97,7 +113,7 @@ class Victim_Machine(Machine):
 
 
 class Attacking_Machine(Machine):
-    def __init__(self, name, os, IP_address, installed_software, attack_actions, subnet=subnet("NULL", [], "NULL"), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, attack_actions, subnet=subnet(), filesystem=File_System([], []), booted=False):
         self.name = name
         self.os = os
         self.IP_address = IP_address
@@ -109,7 +125,7 @@ class Attacking_Machine(Machine):
 
 
 class parfeu(Machine):
-    def __init__(self, name, os, IP_address, installed_software, rules, subnet=subnet("NULL", [], "NULL"), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, rules, subnet=subnet(), filesystem=File_System([], []), booted=False):
         self.name = name
         self.os = os
         self.IP_address = IP_address
@@ -127,7 +143,7 @@ class parfeu(Machine):
 
 
 class Server(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", [], "NULL"), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
@@ -137,7 +153,7 @@ class Server(Victim_Machine):
 
 
 class Client(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", [], "NULL"), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
@@ -147,7 +163,7 @@ class Client(Victim_Machine):
 
 
 class web_server(Server):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", [], "NULL"), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
@@ -157,7 +173,7 @@ class web_server(Server):
 
 
 class mail_server(Server):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet("NULL", [], "NULL,"), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
