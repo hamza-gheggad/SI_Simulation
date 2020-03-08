@@ -6,7 +6,8 @@ config['Machine'] = {
     'name': 'Ordi personnel',
     'os': 'Debian2.0',
     'IP_address': '192.168.56.1',
-    'installed_software': ''
+    'installed_software': '',
+    'rights': 'user'
 }
 
 config['Victim_Machine'] = {
@@ -14,6 +15,7 @@ config['Victim_Machine'] = {
     'os': 'Windows 10',
     'IP_address': '192.168.56.2',
     'installed_software': '',
+    'rights': 'user',
     'vulnerabilities': '',
     'defense_actions': ''
 }
@@ -23,6 +25,7 @@ config['Victim_Externe'] = {
     'os': 'Windows XP',
     'IP_address': '62.212.118.53',
     'installed_software': '',
+    'rights': 'user',
     'vulnerabilities': '',
     'defense_actions': ''
 }
@@ -32,6 +35,7 @@ config['parfeu'] = {
     'os': 'Debian2.1',
     'IP_address': '62.212.118.100',
     'installed_software': '',
+    'rights': 'user',
     'rules': 'FORWARD -i HTTP ACCEPT,FORWARD -o HTTP ACCEPT,FORWARD -i SSH REJECT,FORWARD -o SSH ACCEPT'
 }
 
@@ -48,7 +52,8 @@ config['Server'] = {
     'name': 'name',
     'os': 'os',
     'IP_address': 'IP_address',
-    'installed_software': 'installed_software'
+    'installed_software': 'installed_software',
+    'rights': 'user'
 }
 
 config['Client'] = {
@@ -62,7 +67,8 @@ config['web_server'] = {
     'name': 'user',
     'os': 'Fedora31.0',
     'IP_address': '62.212.118.30',
-    'installed_software': ''
+    'installed_software': '',
+    'rights': 'user'
 }
 
 config['apache2_vuln'] = {
@@ -76,7 +82,8 @@ config['mail_server'] = {
     'name': 'name',
     'os': 'os',
     'IP_address': 'IP_address',
-    'installed_software': 'installed_software'
+    'installed_software': 'installed_software',
+    'rights': 'user'
 }
 
 config['Utilisateur'] = {

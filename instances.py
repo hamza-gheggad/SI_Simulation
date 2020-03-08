@@ -22,21 +22,21 @@ chrome = Software(parser.get('chrome', 'name'), parser.get('chrome', 'version'))
 apache2_vuln = vulnerability(parser.get('apache2_vuln', 'name'), parser.get('apache2_vuln', 'software'), parser.get('apache2_vuln', 'trigger'), parser.get('apache2_vuln', 'action'))
 
 
-MachineVictime = Victim_Machine(parser.get('Victim_Machine', 'name'), parser.get('Victim_Machine', 'os'), parser.get('Victim_Machine', 'IP_address'), [ssh_admin, apache], vulnerabilities=[apache2_vuln])
+MachineVictime = Victim_Machine(parser.get('Victim_Machine', 'name'), parser.get('Victim_Machine', 'os'), parser.get('Victim_Machine', 'IP_address'), installed_software=[ssh_admin, apache], rights=parser.get('Victim_Machine', 'rights'), vulnerabilities=[apache2_vuln])
 sous_reseau_local.add_node(MachineVictime)
 
-VictimeExterne = Victim_Machine(parser.get('Victim_Externe', 'name'), parser.get('Victim_Externe', 'os'), parser.get('Victim_Externe', 'IP_address'), [ssh_admin, apache], vulnerabilities=[apache2_vuln], booted=True)
+VictimeExterne = Victim_Machine(parser.get('Victim_Externe', 'name'), parser.get('Victim_Externe', 'os'), parser.get('Victim_Externe', 'IP_address'), installed_software=[ssh_admin, apache], rights=parser.get('Victim_Externe', 'rights'), vulnerabilities=[apache2_vuln], booted=True)
 sous_reseau_externe.add_node(VictimeExterne)
 
-MachineAttaquant = Attacking_Machine(parser.get('Attacking_Machine', 'name'), parser.get('Attacking_Machine', 'os'), parser.get('Attacking_Machine', 'IP_address'), [ssh_admin],rights=parser.get('Attacking_Machine', 'rights'))
+MachineAttaquant = Attacking_Machine(parser.get('Attacking_Machine', 'name'), parser.get('Attacking_Machine', 'os'), parser.get('Attacking_Machine', 'IP_address'), installed_software=[ssh_admin], rights=parser.get('Attacking_Machine', 'rights'))
 sous_reseau_local.add_node(MachineAttaquant)
 
 
-parfeu = parfeu(parser.get('parfeu', 'name'), parser.get('parfeu', 'os'), parser.get('parfeu', 'IP_address'), [wireshark], parser.get('parfeu', 'rules'), booted=True)
+parfeu = parfeu(parser.get('parfeu', 'name'), parser.get('parfeu', 'os'), parser.get('parfeu', 'IP_address'), installed_software=[wireshark], rights=parser.get('parfeu', 'rights'), rules=parser.get('parfeu', 'rules'), booted=True)
 sous_reseau_externe.add_node(parfeu)
 sous_reseau_externe.parfeu = parfeu
 
-serveur_distant = web_server(parser.get('web_server', 'name'), parser.get('web_server', 'os'), parser.get('web_server', 'IP_address'), [ssh_sever, apache], booted=True)
+serveur_distant = web_server(parser.get('web_server', 'name'), parser.get('web_server', 'os'), parser.get('web_server', 'IP_address'), installed_software=[ssh_sever, apache], booted=True)
 sous_reseau_externe.add_node(serveur_distant)
 
 parfeu.subnet = sous_reseau_externe
