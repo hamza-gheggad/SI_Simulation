@@ -14,7 +14,7 @@ config['Victim_Machine'] = {
     'os': 'Windows 10',
     'IP_address': '192.168.56.2',
     'installed_software': '',
-    'vulnerabilities': 'Chrome_exploit',
+    'vulnerabilities': '',
     'defense_actions': ''
 }
 
@@ -23,7 +23,7 @@ config['Victim_Externe'] = {
     'os': 'Windows XP',
     'IP_address': '62.212.118.53',
     'installed_software': '',
-    'vulnerabilities': 'ssh_weak_password Chrome_exploit',
+    'vulnerabilities': '',
     'defense_actions': ''
 }
 
@@ -39,8 +39,9 @@ config['Attacking_Machine'] = {
     'name': 'Ordi-Anonyme',
     'os': 'Kali2020.1',
     'IP_address': '192.168.56.100',
+    'rights': 'user',
     'installed_software': '',
-    'attack_actions': 'attack1 attack2'
+    'attack_actions': ''
 }
 
 config['Server'] = {
@@ -66,8 +67,9 @@ config['web_server'] = {
 
 config['apache2_vuln'] = {
     'name': 'apache2_vuln',
-    'action': 'buffer_overflow',
-    'trigger': 'version_2.2'
+    'software': 'Apache2',
+    'trigger': 'memory-attack',
+    'action': 'root'
 }
 
 config['mail_server'] = {
@@ -79,12 +81,12 @@ config['mail_server'] = {
 
 config['Utilisateur'] = {
     'name': 'name',
-    'Machine': 'Machine'
+    'Machine': ''
 }
 
 config['Paul'] = {
     'name': 'Paul',
-    'Victim_Machine': 'Victim_Machine'
+    'Victim_Machine': ''
 }
 
 config['Attaquant'] = {
@@ -95,7 +97,7 @@ config['Attaquant'] = {
 
 config['local_subnet'] = {
     'name': 'reseau-local',
-    'IP_range':'192.168.56.0/24',
+    'IP_range': '192.168.56.0/24',
     'components': '',
     'router': '',
     'parfeu': ''
@@ -103,7 +105,7 @@ config['local_subnet'] = {
 
 config['extern_subnet'] = {
     'name': 'reseau-externe',
-    'IP_range':'62.212.118.0/24',
+    'IP_range': '62.212.118.0/24',
     'components': '',
     'router': '',
     'parfeu': ''
@@ -112,24 +114,25 @@ config['extern_subnet'] = {
 config['ssh-admin'] = {
     'name': 'SSH5.1',
     'version': '5.1',
-    'password':'admin'
+    'password': 'admin'
 }
 
 config['HIDS'] = {
     'name': 'HIDS',
     'version': '',
-    'password':''
+    'password': ''
 }
 
 config['ssh-server'] = {
     'name': 'SSH2.4',
     'version': '2.4',
-    'password':'user'
+    'password': 'user'
 }
 
 config['apache'] = {
     'name': 'Apache2',
-    'version': '2.2'
+    'version': '2.2',
+    'accessRight': 'root'
 }
 
 config['metasploit'] = {

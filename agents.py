@@ -41,20 +41,21 @@ class subnet:
 
 
 class File_System:
-    def __init__(self, Repositories, Files):
+    def __init__(self, Repositories=[], Files=[]):
         self.Repositories = Repositories
         self.Files = Files
 
 
 class vulnerability:
-    def __init__(self, name, trigger, action):
+    def __init__(self, name="NULL", software="NULL", trigger="NULL", action="NULL"):
         self.name = name
+        self.software = software
         self.trigger = trigger
         self.action = action
 
 
 class Machine:
-    def __init__(self, name, os, IP_address, installed_software, rights='user', subnet=subnet(), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), filesystem=File_System(), booted=False):
         self.name = name
         self.booted = booted
         self.os = os
@@ -100,10 +101,11 @@ class Machine:
 
 
 class Victim_Machine(Machine):
-    def __init__(self, name, os, IP_address, installed_software, vulnerabilities, defense_actions=[], subnet=subnet(), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, rights='user', vulnerabilities=[], defense_actions=[], subnet=subnet(), filesystem=File_System([], []), booted=False):
         self.name = name
         self.os = os
         self.IP_address = IP_address
+        self.rights = rights
         self.installed_software = installed_software
         self.vulnerabilities = vulnerabilities
         self.defense_actions = defense_actions
@@ -113,10 +115,11 @@ class Victim_Machine(Machine):
 
 
 class Attacking_Machine(Machine):
-    def __init__(self, name, os, IP_address, installed_software, attack_actions, subnet=subnet(), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, rights='user', attack_actions=[], subnet=subnet(), filesystem=File_System(), booted=False):
         self.name = name
         self.os = os
         self.IP_address = IP_address
+        self.rights = rights
         self.installed_software = installed_software
         self.attack_actions = attack_actions
         self.subnet = subnet
@@ -125,10 +128,11 @@ class Attacking_Machine(Machine):
 
 
 class parfeu(Machine):
-    def __init__(self, name, os, IP_address, installed_software, rules, subnet=subnet(), filesystem=File_System([], []), booted=False):
+    def __init__(self, name="NULL", os="NULL", IP_address="NULL", installed_software=[], rights='user', rules="NULL", subnet=subnet(), filesystem=File_System(), booted=False):
         self.name = name
         self.os = os
         self.IP_address = IP_address
+        self.rights = rights
         self.installed_software = installed_software
         self.rules = rules
         self.subnet = subnet
@@ -143,41 +147,45 @@ class parfeu(Machine):
 
 
 class Server(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
+        self.rights = rights
         self.installed_software = installed_software
         self.booted = booted
 
 
 class Client(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
+        self.rights = rights
         self.installed_software = installed_software
         self.booted = booted
 
 
 class web_server(Server):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
+        self.rights = rights
         self.installed_software = installed_software
         self.booted = booted
 
 
 class mail_server(Server):
-    def __init__(self, name, os, IP_address, installed_software, subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
+        self.rights = rights
         self.installed_software = installed_software
         self.booted = booted
 
@@ -231,15 +239,17 @@ class Software:
             print("Les droits d'accès sont déjà user (any).")
 
 
-class NIDS:
-    def __init__(self, nom):
+class HIDS(Software):
+    def __init__(self, name, version, accessRight="user"):
         self.name = name
+        self.version = version
+        self.accessRight = accessRight
 
     def alert(self):
         pass
 
 
-class HIDS:
+class NIDS:
     def __init__(self, nom):
         self.name = name
 
