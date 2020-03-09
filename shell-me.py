@@ -150,6 +150,8 @@ def scenario(env, attaquant, speed):
                         yield env.timeout(speed)
                         print(node.name)
                         H.append(node.name)
+                    if subnet.sonde != "NULL":
+                        subnet.sonde.alert("le sous-réseau {} est en train d'être scanné.".format(subnet.IP_range))
             logging.debug("Les machines du sous-réseau {} sont {}".format(subnet.IP_range, H))
 
         if 'get_version' in L:

@@ -5,7 +5,7 @@ class Router:
     def __init__(self, name, subnetin, subnetout):
         self.name = name
         self.subnetin = subnetin
-        self.subnetù= out = subnetout
+        self.subnet = subnetout
         self.gateway = True
 
     def endrouting(self):
@@ -24,9 +24,10 @@ class Router:
 
 
 class subnet:
-    def __init__(self, name="NULL", IP_range='0.0.0.0/24', components=[], router="NULL", parfeu='NULL'):
+    def __init__(self, name="NULL", sonde="NULL", IP_range='0.0.0.0/24', components=[], router="NULL", parfeu='NULL'):
         self.name = name
         self.components = components
+        self.sonde = sonde
         self.router = router
         self.parfeu = parfeu
         self.IP_range = IP_range
@@ -245,13 +246,16 @@ class HIDS(Software):
         self.version = version
         self.accessRight = accessRight
 
-    def alert(self):
-        pass
+    def alert(self, message="NULL"):
+        print('alerte HIDS : {}'.format(message))
+        logging.debug("alerte HIDS : {}".format(message))
 
 
 class NIDS:
-    def __init__(self, nom):
+    def __init__(self, name="NULL", subnet="NULL"):
         self.name = name
+        self.subnet = subnet
 
-    def alert(self):
-        pass
+    def alert(self, message="NULL"):
+        print('alerte : {}'.format(message))
+        logging.debug("alerte NIDS du sous-réseau {} : {}".format(self.subnet.name, message))

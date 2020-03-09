@@ -5,11 +5,12 @@ from configparser import ConfigParser
 parser = ConfigParser()
 parser.read('dev.ini')
 
-
+sonde_externe = NIDS('sonde_externe')
 router1 = Router("router1", "NULL", "NULL")
 router2 = Router("router2", "NULL", "NULL")
-sous_reseau_local = subnet(parser.get('local_subnet', 'name'), parser.get('local_subnet', 'IP_range'), [], router1, parfeu=parfeu())
-sous_reseau_externe = subnet(parser.get('extern_subnet', 'name'), parser.get('extern_subnet', 'IP_range'), [], router2, parfeu=parfeu())
+sous_reseau_local = subnet(name=parser.get('local_subnet', 'name'), IP_range=parser.get('local_subnet', 'IP_range'), components=[], router=router1, parfeu=parfeu())
+sous_reseau_externe = subnet(name=parser.get('extern_subnet', 'name'), sonde=sonde_externe, IP_range=parser.get('extern_subnet', 'IP_range'), components=[], router=router2, parfeu=parfeu())
+sonde_externe.subnet = sous_reseau_externe
 
 router1.subnetin, router1.subnetout = sous_reseau_local, sous_reseau_externe
 
