@@ -21,7 +21,7 @@ def scenario(env, attaquant, speed):
 
         if ('help' in L) or ('h' in L):
 
-            print("\nLes commandes disponibles sont :\n\nlist_subnet_machines -> lister toutes les machines de votre subnet.\n\nlist_software <ip_machine> -> lister les logiciels ouverts sur machine.\n\nget_version <software> <ip_machine> -> récupérer la version du logiciel.\n\nwhoami <ip> -> afficher les droits\n\nip <machine> -> ip de machine. -> pour quitter.\n\nos <ip_machine> -> os de machine. -> pour quitter.\n\nhelp ou h -> afficher ce menu\n\nexit ou q -> pour quitter.\n\nboot <machine> -> démarrer machine.\n\nshutdown <machine> -> arrêter machine.\n\nreboot <machine> -> redémarrer machine.\n\nroot <software> <ip_machine> -> changer les droits à root.\n\nuser <software> <ip_machine> -> changer les droits à user.\n\nrouter -i -> point de départ du routeur.\n\nrouter -o -> point d'arrivée du routeur.\n\nlist_machines <subnet_name> -> lister les machines d'un réseau.\n\nssh username@ip_address\n\nexploit <software_name> <ip>")
+            print("\nLes commandes disponibles sont :\n\nlist_subnet_machines -> lister toutes les machines de votre subnet.\n\nlist_software <ip_machine> -> lister les logiciels ouverts sur machine.\n\nget_version <software> <ip_machine> -> récupérer la version du logiciel.\n\nwhoami <ip> -> afficher les droits\n\nip <machine> -> ip de machine. -> pour quitter.\n\nos <ip_machine> -> os de machine. -> pour quitter.\n\nhelp ou h -> afficher ce menu\n\nexit ou q -> pour quitter.\n\nboot <machine> -> démarrer machine.\n\nshutdown <machine> -> arrêter machine.\n\nreboot <machine> -> redémarrer machine.\n\nroot <software> <ip_machine> -> changer les droits à root.\n\nuser <software> <ip_machine> -> changer les droits à user.\n\nrouter -i -> point de départ du routeur.\n\nrouter -o -> point d'arrivée du routeur.\n\nscan_machines -s/f <subnet_name> -> lister les machines d'un réseau.\n\nssh username@ip_address\n\nexploit <software_name> <ip>")
 
         if 'router' in L:
             if "i" in L[1]:
@@ -142,16 +142,24 @@ def scenario(env, attaquant, speed):
 
             logging.debug("Les machines de votre sous-réseau sont {}".format(H))
 
-        if 'list_machines' in L:
+        if 'scan_machines' in L:
             H = []
             for subnet in subnets:
-                if subnet.IP_range == L[1]:
-                    for node in subnet.components:
-                        yield env.timeout(speed)
-                        print(node.name)
-                        H.append(node.name)
-                    if subnet.sonde != "NULL":
-                        subnet.sonde.alert("le sous-réseau {} est en train d'être scanné.".format(subnet.IP_range))
+                if subnet.IP_range == L[2]:
+                    if "s" in L[1]:
+                        time.sleep(2)
+                        for node in subnet.components:
+                            yield env.timeout(speed)
+                            print("{}:{}".format(node.name, node.IP_address))
+                            H.append(node.name)
+                    if 'f' in L[1]:
+                        for node in subnet.components:
+                            yield env.timeout(speed)
+                            print("{}:{}".format(node.name, node.IP_address))
+                            H.append(node.name)
+                        if (subnet.sonde != "NULL"):
+                            subnet.sonde.alert("le sous-réseau {} est en train d'être scanné.".format(subnet.IP_range))
+
             logging.debug("Les machines du sous-réseau {} sont {}".format(subnet.IP_range, H))
 
         if 'get_version' in L:
