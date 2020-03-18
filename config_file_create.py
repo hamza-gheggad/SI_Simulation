@@ -164,7 +164,7 @@ config['router2'] = {
 
 config['sonde_externe'] = {
     'name': 'sonde_externe',
-    'rules': 'DETECT FAST SCAN'
+    'rules': 'DETECT FAST SCAN, DETECT DISTANT EXPLOIT'
 }
 
 with open('/Users/p/Desktop/CEI/dev.ini', 'w') as f:

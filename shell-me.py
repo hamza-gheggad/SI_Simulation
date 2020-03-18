@@ -124,6 +124,13 @@ def scenario(env, attaquant, speed):
                                         print("action : {}".format(vuln.action))
                                         node.rights = software.accessRight
                                         logging.debug("Les droits sur la machine {} sont : {}".format(node.name, node.rights))
+
+                        if (subnet.sonde != "NULL"):
+                            rules = subnet.sonde.rules.split(',')
+                            for rule in rules:
+                                if 'DETECT DISTANT EXPLOIT' in rule:
+                                    subnet.sonde.alert("la machine  {}  du sous-réseau {} est en train d'être exploité.".format(node.IP_address, subnet.IP_range))
+
         if 'root' in L:
             for node in attaquant.Attacking_Machine.subnet.components:
                 if node.IP_address == L[2]:
