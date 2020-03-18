@@ -2,7 +2,7 @@ import logging
 
 
 class Router:
-    def __init__(self, name, subnetin, subnetout):
+    def __init__(self, name, subnetin="NULL", subnetout="NULL"):
         self.name = name
         self.subnetin = subnetin
         self.subnet = subnetout
@@ -56,7 +56,7 @@ class vulnerability:
 
 
 class Machine:
-    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), filesystem=File_System(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), filesystem=File_System(), booted=False, host_sonde="NULL"):
         self.name = name
         self.booted = booted
         self.os = os
@@ -64,6 +64,7 @@ class Machine:
         self.IP_address = IP_address
         self.installed_software = installed_software
         self.subnet = subnet
+        self.host_sonde = host_sonde
         self.filesystem = filesystem
 
     def boot(self):
@@ -102,7 +103,7 @@ class Machine:
 
 
 class Victim_Machine(Machine):
-    def __init__(self, name, os, IP_address, installed_software, rights='user', vulnerabilities=[], defense_actions=[], subnet=subnet(), filesystem=File_System([], []), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, rights='user', vulnerabilities=[], defense_actions=[], subnet=subnet(), filesystem=File_System([], []), booted=False, host_sonde="NULL"):
         self.name = name
         self.os = os
         self.IP_address = IP_address
@@ -112,11 +113,12 @@ class Victim_Machine(Machine):
         self.defense_actions = defense_actions
         self.subnet = subnet
         self.filesystem = filesystem
+        self.host_sonde = host_sonde
         self.booted = booted
 
 
 class Attacking_Machine(Machine):
-    def __init__(self, name, os, IP_address, installed_software, rights='user', attack_actions=[], subnet=subnet(), filesystem=File_System(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software, rights='user', attack_actions=[], subnet=subnet(), filesystem=File_System(), booted=False, host_sonde="NULL"):
         self.name = name
         self.os = os
         self.IP_address = IP_address
@@ -125,11 +127,12 @@ class Attacking_Machine(Machine):
         self.attack_actions = attack_actions
         self.subnet = subnet
         self.filesystem = filesystem
+        self.host_sonde = host_sonde
         self.booted = booted
 
 
 class parfeu(Machine):
-    def __init__(self, name="NULL", os="NULL", IP_address="NULL", installed_software=[], rights='user', rules="NULL", subnet=subnet(), filesystem=File_System(), booted=False):
+    def __init__(self, name="NULL", os="NULL", IP_address="NULL", installed_software=[], rights='user', rules="NULL", subnet=subnet(), filesystem=File_System(), booted=False, host_sonde="NULL"):
         self.name = name
         self.os = os
         self.IP_address = IP_address
@@ -138,6 +141,7 @@ class parfeu(Machine):
         self.rules = rules
         self.subnet = subnet
         self.filesystem = filesystem
+        self.host_sonde = host_sonde
         self.booted = booted
 
     def add_rule(self, rule):
@@ -148,46 +152,50 @@ class parfeu(Machine):
 
 
 class Server(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False, host_sonde="NULL"):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
         self.rights = rights
         self.installed_software = installed_software
+        self.host_sonde = host_sonde
         self.booted = booted
 
 
 class Client(Victim_Machine):
-    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False, host_sonde="NULL"):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
         self.rights = rights
         self.installed_software = installed_software
+        self.host_sonde = host_sonde
         self.booted = booted
 
 
 class web_server(Server):
-    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False, host_sonde="NULL"):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
         self.rights = rights
         self.installed_software = installed_software
+        self.host_sonde = host_sonde
         self.booted = booted
 
 
 class mail_server(Server):
-    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False):
+    def __init__(self, name, os, IP_address, installed_software=[], rights='user', subnet=subnet(), booted=False, host_sonde="NULL"):
         self.name = name
         self.os = os
         self.subnet = subnet
         self.IP_address = IP_address
         self.rights = rights
         self.installed_software = installed_software
+        self.host_sonde = host_sonde
         self.booted = booted
 
 
@@ -241,9 +249,10 @@ class Software:
 
 
 class HIDS(Software):
-    def __init__(self, name, version, accessRight="user"):
+    def __init__(self, name, version="NULL", accessRight="user", rules="NULL"):
         self.name = name
         self.version = version
+        self.rules = rules
         self.accessRight = accessRight
 
     def alert(self, message="NULL"):
@@ -252,9 +261,10 @@ class HIDS(Software):
 
 
 class NIDS:
-    def __init__(self, name="NULL", subnet="NULL"):
+    def __init__(self, name="NULL", subnet="NULL", rules="NULL"):
         self.name = name
         self.subnet = subnet
+        self.rules = rules
 
     def alert(self, message="NULL"):
         print('alerte : {}'.format(message))

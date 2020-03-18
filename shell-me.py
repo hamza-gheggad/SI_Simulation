@@ -21,7 +21,7 @@ def scenario(env, attaquant, speed):
 
         if ('help' in L) or ('h' in L):
 
-            print("\nLes commandes disponibles sont :\n\nlist_subnet_machines -> lister toutes les machines de votre subnet.\n\nlist_software <ip_machine> -> lister les logiciels ouverts sur machine.\n\nget_version <software> <ip_machine> -> récupérer la version du logiciel.\n\nwhoami <ip> -> afficher les droits\n\nip <machine> -> ip de machine. -> pour quitter.\n\nos <ip_machine> -> os de machine. -> pour quitter.\n\nhelp ou h -> afficher ce menu\n\nexit ou q -> pour quitter.\n\nboot/shutdown/reboot <ip> -> démarrer/arrêter/redémarrer machine.\n\nroot <software> <ip_machine> -> changer les droits à root.\n\nuser <software> <ip_machine> -> changer les droits à user.\n\nrouter -i/o -> point de départ/d'arrivée du routeur\n\nscan_machines -s/f <subnet_name> -> lister les machines d'un réseau.\n\nssh username@ip_address\n\nexploit <software_name> <ip>")
+            print("\nLes commandes disponibles sont :\n\nlist_subnet_machines -> lister toutes les machines de votre subnet.\n\nscan_services <ip_machine> -> lister les services ouverts sur machine.\n\nget_version <software> <ip_machine> -> récupérer la version du logiciel.\n\nwhoami <ip> -> afficher les droits\n\nip <machine_name> -> ip de machine. -> pour quitter.\n\nos <ip_machine> -> os de machine. -> pour quitter.\n\nhelp ou h -> afficher ce menu\n\nexit ou q -> pour quitter.\n\nboot/shutdown/reboot <ip> -> démarrer/arrêter/redémarrer machine.\n\nroot <software> <ip_machine> -> changer les droits à root.\n\nuser <software> <ip_machine> -> changer les droits à user.\n\nrouter -i/o -> point de départ/d'arrivée du routeur\n\nscan_machines -s/f <subnet_name> -> lister les machines d'un réseau.\n\nssh username@ip_address\n\nexploit <software_name> <ip>")
 
         if 'router' in L:
             if "i" in L[1]:
@@ -89,7 +89,7 @@ def scenario(env, attaquant, speed):
                                 else:
                                     print("mot de passe érroné.")
 
-        if 'list_software' in L:
+        if 'scan_services' in L:
             H = []
             for subnet in subnets:
                 for node in subnet.components:
@@ -100,6 +100,12 @@ def scenario(env, attaquant, speed):
                                 yield env.timeout(speed)
                                 print(software.name)
                                 H.append(software.name)
+
+                            if (node.host_sonde != "NULL"):
+                                rules = node.host_sonde.rules.split(',')
+                                for rule in rules:
+                                    if 'DETECT SERVICE SCAN' in rule:
+                                        node.host_sonde.alert("les services de la machine {} sont en train d'être scannés.".format(node.name))
                         else:
                             print("Vous n'avez pas les droits nécessaires.")
 
@@ -167,8 +173,11 @@ def scenario(env, attaquant, speed):
                             yield env.timeout(speed)
                             print("{}:{}".format(node.name, node.IP_address))
                             H.append(node.name)
+                        rules = subnet.sonde.rules.split(',')
                         if (subnet.sonde != "NULL"):
-                            subnet.sonde.alert("le sous-réseau {} est en train d'être scanné.".format(subnet.IP_range))
+                            for rule in rules:
+                                if 'DETECT FAST SCAN' in rule:
+                                    subnet.sonde.alert("le sous-réseau {} est en train d'être scanné.".format(subnet.IP_range))
 
             logging.debug("Les machines du sous-réseau {} sont {}".format(subnet.IP_range, H))
 
@@ -180,7 +189,7 @@ def scenario(env, attaquant, speed):
                             time.sleep(1)
                             yield env.timeout(speed)
                             print(software.version)
-                            logging.debug("La version de {} du {} est : {}".format(software.name, node.name, software.version))
+                            logging.debug("La version de {} de {} est : {}".format(software.name, node.name, software.version))
 
         if 'ip' in L:
             if len(L) == 1:
@@ -197,6 +206,7 @@ def scenario(env, attaquant, speed):
             for node in attaquant.Attacking_Machine.subnet.components:
                 if node.IP_address == L[1]:
                     time.sleep(1)
+                    yield env.timeout(speed)
                     print(node.os)
                     logging.debug("os de {} est : {}".format(node.name, node.os))
 
@@ -204,10 +214,12 @@ def scenario(env, attaquant, speed):
             for subnet in subnets:
                 for node in subnet.components:
                     if node.IP_address == L[1]:
+                        yield env.timeout(speed)
                         node.boot()
 
         if 'whoami' in L:
             if len(L) == 1:
+                yield env.timeout(speed)
                 print(attaquant.Attacking_Machine.rights)
             else:
                 for subnet in subnets:
@@ -220,6 +232,7 @@ def scenario(env, attaquant, speed):
                 for node in subnet.components:
                     if node.IP_address == L[1]:
                         if node.rights == 'root':
+                            yield env.timeout(speed)
                             node.shutdown()
                         else:
                             print("Vous n'avez pas les droits nécessaires.")

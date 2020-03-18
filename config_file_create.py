@@ -124,10 +124,10 @@ config['ssh-admin'] = {
     'password': 'admin'
 }
 
-config['HIDS'] = {
-    'name': 'HIDS',
-    'version': '',
-    'password': ''
+config['HIDS1'] = {
+    'name': 'HIDS1',
+    'version': '10.2',
+    'rules': 'DETECT SERVICE SCAN'
 }
 
 config['ssh-server'] = {
@@ -142,32 +142,29 @@ config['apache'] = {
     'accessRight': 'root'
 }
 
-config['metasploit'] = {
-    'name': 'Metasploit',
-    'version': '4.17'
-}
 
 config['wireshark'] = {
     'name': 'Wireshark',
     'version': '3.0.1'
 }
 
-config['chrome'] = {
-    'name': 'Chrome',
-    'version': '81.0'
-}
 
 config['File_System'] = {
     'Repositories': 'Repositories',
     'Files': 'Files'
 }
 
-config['Router'] = {
-    'IP_address': 'IP_address'
+config['router1'] = {
+    'name': 'router1'
 }
 
-config['NIDS'] = {
-    'name': 'name'
+config['router2'] = {
+    'name': 'router2'
+}
+
+config['sonde_externe'] = {
+    'name': 'sonde_externe',
+    'rules': 'DETECT FAST SCAN'
 }
 
 with open('/Users/p/Desktop/CEI/dev.ini', 'w') as f:

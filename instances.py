@@ -5,9 +5,11 @@ from configparser import ConfigParser
 parser = ConfigParser()
 parser.read('dev.ini')
 
-sonde_externe = NIDS('sonde_externe')
-router1 = Router("router1", "NULL", "NULL")
-router2 = Router("router2", "NULL", "NULL")
+sonde_externe = NIDS(name=parser.get('sonde_externe', 'name'), rules=parser.get('sonde_externe', 'rules'))
+HIDS1 = HIDS(name=parser.get('HIDS1', 'name'), rules=parser.get('HIDS1', 'rules'))
+
+router1 = Router(name=parser.get('router1', 'name'))
+router2 = Router(name=parser.get('router2', 'name'))
 sous_reseau_local = subnet(name=parser.get('local_subnet', 'name'), IP_range=parser.get('local_subnet', 'IP_range'), components=[], router=router1, parfeu=parfeu())
 sous_reseau_externe = subnet(name=parser.get('extern_subnet', 'name'), sonde=sonde_externe, IP_range=parser.get('extern_subnet', 'IP_range'), components=[], router=router2, parfeu=parfeu())
 sonde_externe.subnet = sous_reseau_externe
@@ -18,7 +20,7 @@ ssh_admin = Software(parser.get('ssh-admin', 'name'), parser.get('ssh-admin', 'v
 ssh_sever = Software(parser.get('ssh-server', 'name'), parser.get('ssh-server', 'version'), token1=parser.get('ssh-server', 'password'))
 apache = Software(parser.get('apache', 'name'), parser.get('apache', 'version'), accessRight=parser.get('apache', 'accessRight'))
 wireshark = Software(parser.get('wireshark', 'name'), parser.get('wireshark', 'version'))
-chrome = Software(parser.get('chrome', 'name'), parser.get('chrome', 'version'))
+
 
 apache2_vuln = vulnerability(parser.get('apache2_vuln', 'name'), parser.get('apache2_vuln', 'software'), parser.get('apache2_vuln', 'trigger'), parser.get('apache2_vuln', 'action'))
 
@@ -26,7 +28,7 @@ apache2_vuln = vulnerability(parser.get('apache2_vuln', 'name'), parser.get('apa
 MachineVictime = Victim_Machine(parser.get('Victim_Machine', 'name'), parser.get('Victim_Machine', 'os'), parser.get('Victim_Machine', 'IP_address'), installed_software=[ssh_admin, apache], rights=parser.get('Victim_Machine', 'rights'), vulnerabilities=[apache2_vuln])
 sous_reseau_local.add_node(MachineVictime)
 
-VictimeExterne = Victim_Machine(parser.get('Victim_Externe', 'name'), parser.get('Victim_Externe', 'os'), parser.get('Victim_Externe', 'IP_address'), installed_software=[ssh_admin, apache], rights=parser.get('Victim_Externe', 'rights'), vulnerabilities=[apache2_vuln], booted=True)
+VictimeExterne = Victim_Machine(parser.get('Victim_Externe', 'name'), parser.get('Victim_Externe', 'os'), parser.get('Victim_Externe', 'IP_address'), installed_software=[ssh_admin, apache], rights=parser.get('Victim_Externe', 'rights'), vulnerabilities=[apache2_vuln], booted=True, host_sonde=HIDS1)
 sous_reseau_externe.add_node(VictimeExterne)
 
 MachineAttaquant = Attacking_Machine(parser.get('Attacking_Machine', 'name'), parser.get('Attacking_Machine', 'os'), parser.get('Attacking_Machine', 'IP_address'), installed_software=[ssh_admin], rights=parser.get('Attacking_Machine', 'rights'))
