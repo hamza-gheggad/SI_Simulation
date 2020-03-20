@@ -52,7 +52,7 @@ config['Server'] = {
     'name': 'name',
     'os': 'os',
     'IP_address': 'IP_address',
-    'installed_software': 'installed_software',
+    'installed_software': '',
     'rights': 'user'
 }
 
@@ -60,7 +60,7 @@ config['Client'] = {
     'name': 'name',
     'os': 'os',
     'IP_address': 'IP_address',
-    'installed_software': 'installed_software'
+    'installed_software': ''
 }
 
 config['web_server'] = {
@@ -82,7 +82,7 @@ config['mail_server'] = {
     'name': 'name',
     'os': 'os',
     'IP_address': 'IP_address',
-    'installed_software': 'installed_software',
+    'installed_software': '',
     'rights': 'user'
 }
 

@@ -268,4 +268,4 @@ class NIDS:
 
     def alert(self, message="NULL"):
         print('alerte : {}'.format(message))
-        logging.debug("alerte NIDS du sous-réseau {} : {}".format(self.subnet.name, message))
+        logging.debug("alerte NIDS du sous-réseau {}:{} : {}".format(self.subnet.name, self.subnet.IP_range, message))
